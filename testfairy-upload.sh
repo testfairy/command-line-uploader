@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# UPDATE THESE
+API_KEY=
+TESTER_GROUPS=
+KEYSTORE=~/android-studio-keystore/keystore.jks 
+STOREPASS=10203040
+ALIAS=android
+
 if [ $# -ne 1 ]; then
 	echo "Usage: testfairy-upload.sh APK_FILENAME"
 	echo
@@ -14,21 +21,13 @@ if [ ! -f "${APK_FILENAME}" ]; then
 	exit 2
 fi
 
-# api_key, as provided in your Settings page
-API_KEY=1
-TESTER_GROUPS=
-SERVER_ENDPOINT=https://app.testfairy.com
-
-# keystore information
-KEYSTORE=~/android-studio-keystore/keystore.jks 
-STOREPASS=10203040
-ALIAS=android
-
 # locations of various tools
 CURL=curl
 ZIP=zip
 ZIPALIGN=zipalign
 JARSIGNER=jarsigner
+
+SERVER_ENDPOINT=https://app.testfairy.com
 
 TMP_FILENAME=/tmp/.testfairy.upload.apk
 ZIPALIGNED_FILENAME=/tmp/.testfairy.zipalign.apk
