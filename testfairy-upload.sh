@@ -71,7 +71,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${API_KEY} -F apk_file=@${TMP_FILENAME}
+${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME}
 echo "OK!"
 
 rm -f ${ZIPALIGNED_FILENAME}
