@@ -4,8 +4,15 @@
 API_KEY=
 TESTER_GROUPS=
 KEYSTORE=~/android-studio-keystore/keystore.jks 
-STOREPASS=10203040
+STOREPASS=PUT_YOUR_KEYSTORE_PASSWORD_HERE
 ALIAS=android
+
+# locations of various tools
+CURL=curl
+ZIP=zip
+ZIPALIGN=zipalign
+JARSIGNER=jarsigner
+SERVER_ENDPOINT=https://app.testfairy.com
 
 if [ $# -ne 1 ]; then
 	echo "Usage: testfairy-upload.sh APK_FILENAME"
@@ -21,14 +28,6 @@ if [ ! -f "${APK_FILENAME}" ]; then
 	exit 2
 fi
 
-# locations of various tools
-CURL=curl
-ZIP=zip
-ZIPALIGN=zipalign
-JARSIGNER=jarsigner
-
-SERVER_ENDPOINT=https://app.testfairy.com
-
 TMP_FILENAME=/tmp/.testfairy.upload.apk
 ZIPALIGNED_FILENAME=/tmp/.testfairy.zipalign.apk
 
@@ -40,7 +39,7 @@ if [ -z "${API_KEY}" ]; then
 fi
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=`${CURL} -3s ${SERVER_ENDPOINT}/api/upload -F api_key=${API_KEY} -F apk_file=@${APK_FILENAME} -F testers_groups='${TESTER_GROUPS}'`
+JSON=`${CURL} -3s ${SERVER_ENDPOINT}/api/upload -F api_key=${API_KEY} -F apk_file=@${APK_FILENAME} -F testers_groups=${TESTER_GROUPS}`
 
 URL=`echo ${JSON} | grep -o '"instrumented_url"\s*:\s*"[^"]*"' | sed 's/"instrumented_url"\s*:\s*"\([^"]*\)"/\1/' | sed 's/\\\//g'`
 if [ -z "${URL}" ]; then
@@ -75,3 +74,4 @@ ${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${API_KEY} -F apk_fi
 echo "OK!"
 
 rm -f ${ZIPALIGNED_FILENAME}
+
