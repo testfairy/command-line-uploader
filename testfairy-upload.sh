@@ -1,11 +1,15 @@
 #!/bin/sh
 
-# UPDATE THESE
-API_KEY=
+# Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
+TESTFAIRY_API_KEY=
+
+# Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 TESTER_GROUPS=
-KEYSTORE=~/android-studio-keystore/keystore.jks 
-STOREPASS=PUT_YOUR_KEYSTORE_PASSWORD_HERE
-ALIAS=android
+
+# Your Keystore, Storepass and Alias, the ones you use to sign your app.
+KEYSTORE=
+STOREPASS=
+ALIAS=
 
 # locations of various tools
 CURL=curl
@@ -31,7 +35,7 @@ fi
 TMP_FILENAME=/tmp/.testfairy.upload.apk
 ZIPALIGNED_FILENAME=/tmp/.testfairy.zipalign.apk
 
-if [ -z "${API_KEY}" ]; then
+if [ -z "${TESTFAIRY_API_KEY}" ]; then
 	echo "Usage: testfairy-upload.sh APK_FILENAME"
 	echo
 	echo "Please update API_KEY with your private API key, as noted in the Settings page"
@@ -39,7 +43,7 @@ if [ -z "${API_KEY}" ]; then
 fi
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=`${CURL} -3s ${SERVER_ENDPOINT}/api/upload -F api_key=${API_KEY} -F apk_file=@${APK_FILENAME} -F testers_groups=${TESTER_GROUPS}`
+JSON=`${CURL} -3s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F testers_groups=${TESTER_GROUPS}`
 
 URL=`echo ${JSON} | grep -o '"instrumented_url"\s*:\s*"[^"]*"' | sed 's/"instrumented_url"\s*:\s*"\([^"]*\)"/\1/' | sed 's/\\\//g'`
 if [ -z "${URL}" ]; then
@@ -70,7 +74,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME}
+${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME}
 echo "OK!"
 
 rm -f ${ZIPALIGNED_FILENAME}
