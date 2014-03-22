@@ -43,7 +43,7 @@ if [ -z "${TESTFAIRY_API_KEY}" ]; then
 fi
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=`${CURL} -3s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F testers_groups=${TESTER_GROUPS}`
+JSON=`${CURL} -3s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME}`
 
 URL=`echo ${JSON} | grep -o '"instrumented_url"\s*:\s*"[^"]*"' | sed 's/"instrumented_url"\s*:\s*"\([^"]*\)"/\1/' | sed 's/\\\//g'`
 if [ -z "${URL}" ]; then
@@ -74,7 +74,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME}
+${CURL} -3s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers_groups=${TESTER_GROUPS}
 echo "OK!"
 
 rm -f ${ZIPALIGNED_FILENAME}
