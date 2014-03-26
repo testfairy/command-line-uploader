@@ -44,6 +44,7 @@ verify_tools() {
 	fi
 	
 	OUTPUT=$( ${JARSIGNER} -help 2>&1 )
+	DUMMY=$( echo $OUTPUT | grep "verify" )
 	if [ $? -ne 0 ]; then
 		echo "Could not run jarsigner tool, please check settings"
 		exit 1
@@ -57,6 +58,7 @@ verify_tools() {
 	fi
 
 	OUTPUT=$( ${KEYTOOL} -help 2>&1 )
+	DUMMY=$( echo $OUTPUT | grep "keypasswd" )
 	if [ $? -ne 0 ]; then
 		echo "Could not run keytool tool, please check settings"
 		exit 1
@@ -107,7 +109,7 @@ ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} )
+JSON=$( ${CURL} -s -k ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
@@ -117,9 +119,19 @@ if [ -z "${URL}" ]; then
 	exit 1
 fi
 
+URL="${URL}?api_key=${TESTFAIRY_API_KEY}"
+
 echo "OK!"
 /bin/echo -n "Downloading instrumented APK.. "
-${CURL} -o ${TMP_FILENAME} -s ${URL}
+${CURL} -k -o ${TMP_FILENAME} -s ${URL}
+
+if [ ! -f "${TMP_FILENAME}" ]; then
+	echo "FAILED!"
+	echo
+	echo "Could not download APK back from server, please contact support@testfairy.com"
+	exit 1
+fi
+
 echo "OK!"
 
 /bin/echo -n "Re-signing APK file.. "
@@ -138,7 +150,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
+JSON=$( ${CURL} -k -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
 rm -f ${ZIPALIGNED_FILENAME}
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
