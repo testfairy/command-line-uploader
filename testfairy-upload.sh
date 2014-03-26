@@ -27,6 +27,8 @@ usage() {
 	
 verify_tools() {
 
+	# Windows users: this script requires zip, curl and sed. If not installed please get from http://cygwin.com/
+	
 	# Check 'zip' tool
 	${ZIP} -h >/dev/null
 	if [ $? -ne 0 ]; then
