@@ -107,7 +107,7 @@ ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s -k ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} )
+JSON=$( ${CURL} -s -k -3 ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
@@ -121,7 +121,7 @@ URL="${URL}?api_key=${TESTFAIRY_API_KEY}"
 
 echo "OK!"
 /bin/echo -n "Downloading instrumented APK.. "
-${CURL} -k -o ${TMP_FILENAME} -s ${URL}
+${CURL} -k -3 -o ${TMP_FILENAME} -s ${URL}
 
 if [ ! -f "${TMP_FILENAME}" ]; then
 	echo "FAILED!"
@@ -148,7 +148,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-JSON=$( ${CURL} -k -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
+JSON=$( ${CURL} -k -3 -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
 rm -f ${ZIPALIGNED_FILENAME}
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
