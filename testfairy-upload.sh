@@ -43,8 +43,7 @@ verify_tools() {
 		exit 1
 	fi
 	
-	OUTPUT=$( ${JARSIGNER} -help 2>&1 )
-	DUMMY=$( echo $OUTPUT | grep "verify" )
+	OUTPUT=$( ${JARSIGNER} -help 2>&1 | grep "verify" )
 	if [ $? -ne 0 ]; then
 		echo "Could not run jarsigner tool, please check settings"
 		exit 1
@@ -57,8 +56,7 @@ verify_tools() {
 		exit 1
 	fi
 
-	OUTPUT=$( ${KEYTOOL} -help 2>&1 )
-	DUMMY=$( echo $OUTPUT | grep "keypasswd" )
+	OUTPUT=$( ${KEYTOOL} -help 2>&1 | grep "keypasswd" )
 	if [ $? -ne 0 ]; then
 		echo "Could not run keytool tool, please check settings"
 		exit 1
