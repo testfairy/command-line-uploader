@@ -1,6 +1,6 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.01
+UPLOADER_VERSION=1.03
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
 TESTFAIRY_API_KEY=
@@ -20,7 +20,7 @@ KEYTOOL=keytool
 ZIPALIGN=zipalign
 JARSIGNER=jarsigner
 
-SERVER_ENDPOINT=https://app.testfairy.com
+SERVER_ENDPOINT=http://app.testfairy.com
 
 usage() {
 	echo "Usage: testfairy-upload.sh APK_FILENAME"
@@ -109,7 +109,7 @@ ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s -3 ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
@@ -123,7 +123,7 @@ URL="${URL}?api_key=${TESTFAIRY_API_KEY}"
 
 echo "OK!"
 /bin/echo -n "Downloading instrumented APK.. "
-${CURL} -3 -o ${TMP_FILENAME} -s ${URL}
+${CURL} -o ${TMP_FILENAME} -s ${URL}
 
 if [ ! -f "${TMP_FILENAME}" ]; then
 	echo "FAILED!"
@@ -150,7 +150,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-JSON=$( ${CURL} -3 -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
 rm -f ${ZIPALIGNED_FILENAME}
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
