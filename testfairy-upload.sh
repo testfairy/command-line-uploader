@@ -1,6 +1,6 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.03
+UPLOADER_VERSION=1.04
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
 TESTFAIRY_API_KEY=
