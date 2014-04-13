@@ -104,12 +104,13 @@ if [ ! -f "${APK_FILENAME}" ]; then
 fi
 
 # temporary file paths
+DATE=`date`
 TMP_FILENAME=.testfairy.upload.apk
 ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F video="on" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F video="on" -F max-duration="10m" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
