@@ -1,12 +1,22 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.04
+UPLOADER_VERSION=1.05
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
 TESTFAIRY_API_KEY=
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
+# This parameter is optional, leave empty if not required
 TESTER_GROUPS=
+
+# If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
+AUTO_UPDATE="off"
+
+# The maximum recording duration for every test. 
+MAX_DURATION="10m"
+
+# Is video recording enabled for this build 
+VIDEO="on"
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
 KEYSTORE=
@@ -110,7 +120,7 @@ ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F video="on" -F max-duration="10m" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
@@ -151,7 +161,7 @@ rm -f ${TMP_FILENAME}
 echo "OK!"
 
 /bin/echo -n "Uploading signed APK to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload-signed -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${ZIPALIGNED_FILENAME} -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" )
 rm -f ${ZIPALIGNED_FILENAME}
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
