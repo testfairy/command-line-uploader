@@ -9,7 +9,7 @@ TESTFAIRY_API_KEY=
 # This parameter is optional, leave empty if not required
 TESTER_GROUPS=
 
-# Should email testers about neew version. Set to "off" to siable email notifications.
+# Should email testers about neew version. Set to "off" to disable email notifications.
 NOTIFY="on"
 
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
@@ -20,6 +20,9 @@ MAX_DURATION="10m"
 
 # Is video recording enabled for this build 
 VIDEO="on"
+
+# Add a TestFairy watermark to the application icon?
+ICON_WATERMARK="on"
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
 KEYSTORE=
@@ -123,7 +126,7 @@ ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file=@${APK_FILENAME} -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
