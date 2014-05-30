@@ -9,7 +9,7 @@ TESTFAIRY_API_KEY=
 # This parameter is optional, leave empty if not required
 TESTER_GROUPS=
 
-# Should email testers about neew version. Set to "off" to disable email notifications.
+# Should email testers about new version. Set to "off" to disable email notifications.
 NOTIFY="on"
 
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
