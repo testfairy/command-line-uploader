@@ -1,6 +1,6 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.07
+UPLOADER_VERSION=1.08
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
 TESTFAIRY_API_KEY=
@@ -143,7 +143,7 @@ URL="${URL}?api_key=${TESTFAIRY_API_KEY}"
 
 echo "OK!"
 /bin/echo -n "Downloading instrumented APK.. "
-${CURL} -o ${TMP_FILENAME} -s ${URL}
+${CURL} -L -o ${TMP_FILENAME} -s ${URL}
 
 if [ ! -f "${TMP_FILENAME}" ]; then
 	echo "FAILED!"
