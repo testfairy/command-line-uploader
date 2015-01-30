@@ -2,7 +2,7 @@
 
 UPLOADER_VERSION=1.09
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=3989c4aada22549c9e698f13f33a8ed16afc9fe2
+TESTFAIRY_API_KEY=
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
