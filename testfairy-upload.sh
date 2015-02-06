@@ -26,6 +26,17 @@ MAX_DURATION="10m"
 # Is video recording enabled for this build 
 VIDEO="on"
 
+#  Below is a list of available metrics for recording in a session:
+#    cpu - user/kernel usage statistics.
+#    memory - process private/shared memory statistics.
+#    network - process network utilization.
+#    phone-signal - phone signal strength.
+#    logcat - process logs from logcat (Adds android.permission.READ_LOGS permission.)
+#    gps - raw GPS location data, if used by app.
+#    battery - battery status and drainage (Adds android.permission.BATTERY_STATS permission.)
+#    mic - keep microphone audio data, if used by app.
+METRICS="cpu,memory,network,logcat"
+
 # Add a TestFairy watermark to the application icon?
 ICON_WATERMARK="on"
 
@@ -129,7 +140,7 @@ ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
 rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 
 /bin/echo -n "Uploading ${APK_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F metrics="${METRICS}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
