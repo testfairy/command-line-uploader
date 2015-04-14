@@ -3,41 +3,41 @@
 UPLOADER_VERSION=1.09
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=
+#TESTFAIRY_API_KEY=
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=
-STOREPASS=
-ALIAS=
+#KEYSTORE=
+#STOREPASS=
+#ALIAS=
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
-TESTER_GROUPS=
+#TESTER_GROUPS=
 
 # Should email testers about new version. Set to "off" to disable email notifications.
-NOTIFY="on"
+NOTIFY="${NOTIFY:-on}"
 
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
-AUTO_UPDATE="off"
+AUTO_UPDATE="${AUTO_UPDATE:-off}"
 
 # The maximum recording duration for every test. 
-MAX_DURATION="10m"
+MAX_DURATION="${MAX_DURATION:-10m}"
 
 # Is video recording enabled for this build 
-VIDEO="on"
+VIDEO="${VIDEO:-on}"
 
 # Add a TestFairy watermark to the application icon?
-ICON_WATERMARK="on"
+ICON_WATERMARK="${ICON_WATERMARK:-on}"
 
 # Comment text will be included in the email sent to testers
-COMMENT=""
+#COMMENT=""
 
 # locations of various tools
-CURL=curl
-ZIP=zip
-KEYTOOL=keytool
-ZIPALIGN=zipalign
-JARSIGNER=jarsigner
+CURL=${CURL:-curl}
+ZIP=${ZIP:-zip}
+KEYTOOL=${KEYTOOL:-keytool}
+ZIPALIGN=${ZIPALIGN:-zipalign}
+JARSIGNER=${JARSIGNER:-jarsigner}
 
 SERVER_ENDPOINT=http://app.testfairy.com
 
