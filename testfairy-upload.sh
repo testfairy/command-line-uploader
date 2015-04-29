@@ -1,18 +1,20 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.09
+UPLOADER_VERSION=1.10
 
-# Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=
+# Your TestFairy API_KEY. Find it in your TestFairy account settings.
+TESTFAIRY_API_KEY=$(awk -F "=" '/TESTFAIRY_API_KEY/ {print $2}' config.ini)
 
-# Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=
-STOREPASS=
-ALIAS=
+# Your Keystore, Storepass and Alias, the ones you use to sign your app
+KEYSTORE=$(awk -F "=" '/KEYSTORE/ {print $2}' config.ini)
+STOREPASS=$(awk -F "=" '/STOREPASS/ {print $2}' config.ini)
+ALIAS=$(awk -F "=" '/ALIAS/ {print $2}' config.ini)
+
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
-TESTER_GROUPS=
+TESTER_GROUPS=$(awk -F "=" '/TESTER_GROUPS/ {print $2}' config.ini)
+
 
 # Should email testers about new version. Set to "off" to disable email notifications.
 NOTIFY="on"
@@ -41,9 +43,11 @@ JARSIGNER=jarsigner
 
 SERVER_ENDPOINT=http://app.testfairy.com
 
+APK_FILENAME=$1
+
 usage() {
-	echo "Usage: testfairy-upload.sh APK_FILENAME"
-	echo
+	echo "Usage: testfairy-upload.sh $APK_FILENAME"
+	echo 
 }
 	
 verify_tools() {
@@ -115,7 +119,6 @@ fi
 verify_tools
 verify_settings
 
-APK_FILENAME=$1
 if [ ! -f "${APK_FILENAME}" ]; then
 	usage
 	echo "Can't find file: ${APK_FILENAME}"

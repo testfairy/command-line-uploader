@@ -1,12 +1,14 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.09
-# Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=
+UPLOADER_VERSION=1.10
+
+# Get settings from config.ini file
+# Your TestFairy API_KEY. Find it in your TestFairy account settings.
+TESTFAIRY_API_KEY=$(awk -F "=" '/TESTFAIRY_API_KEY/ {print $2}' config.ini)
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
-TESTER_GROUPS=
+TESTER_GROUPS=$(awk -F "=" '/TESTER_GROUPS/ {print $2}' config.ini)
 
 # Should email testers about new version. Set to "off" to disable email notifications.
 NOTIFY="on"
