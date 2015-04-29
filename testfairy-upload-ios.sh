@@ -8,7 +8,7 @@ TESTFAIRY_API_KEY=$(awk -F "=" '/TESTFAIRY_API_KEY/ {print $2}' config.ini)
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
-TESTER_GROUPS=$(awk -F "=" '/ALIAS/ {print $2}' config.ini)
+TESTER_GROUPS=$(awk -F "=" '/TESTER_GROUPS/ {print $2}' config.ini)
 
 # Should email testers about new version. Set to "off" to disable email notifications.
 NOTIFY="on"
