@@ -1,8 +1,6 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.09
-
-# Get settings from config.ini file
+UPLOADER_VERSION=1.10
 
 # Your TestFairy API_KEY. Find it in your TestFairy account settings.
 TESTFAIRY_API_KEY=$(awk -F "=" '/TESTFAIRY_API_KEY/ {print $2}' config.ini)
