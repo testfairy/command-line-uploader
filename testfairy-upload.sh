@@ -1,18 +1,18 @@
 #!/bin/sh
 
-UPLOADER_VERSION=1.09
+UPLOADER_VERSION=1.10
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=
+TESTFAIRY_API_KEY=${TESTFAIRY_API_KEY:=}
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=
-STOREPASS=
-ALIAS=
+KEYSTORE=${KEYSTORE:=}
+STOREPASS=${STOREPASS:=}
+ALIAS=${ALIAS:=}
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
-TESTER_GROUPS=
+TESTER_GROUPS=${TESTER_GROUPS:=}
 
 # Should email testers about new version. Set to "off" to disable email notifications.
 NOTIFY="on"
@@ -30,7 +30,7 @@ VIDEO="on"
 ICON_WATERMARK="on"
 
 # Comment text will be included in the email sent to testers
-COMMENT=""
+COMMENT=${COMMENT:=""}
 
 # locations of various tools
 CURL=curl
