@@ -3,12 +3,12 @@
 UPLOADER_VERSION=1.09
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=
+TESTFAIRY_API_KEY=2ac2709f30963b30320dbb3c375416b5956f5e6d
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=
-STOREPASS=
-ALIAS=
+KEYSTORE=~/androidkeystore.jks
+STOREPASS=11111111
+ALIAS=tishmasandroidkey
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
@@ -128,21 +128,24 @@ DATE=`date`
 TMP_FILENAME=.testfairy.upload.apk
 INSTRUMENTED_FILENAME=.testfairy.instrumented.zip
 ZIPALIGNED_FILENAME=.testfairy.zipalign.apk
-STRIPPED_FILENAME=.testfairy.stripped.zip
 TMPDIR_STRIP=.testfairy.tmp
 TMPDIR_INSTRUMENTED=.testfairy.instrumented
-rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}" "${STRIPPED_FILENAME}"
+rm -f "${TMP_FILENAME}" "${ZIPALIGNED_FILENAME}"
 rm -rf ${TMPDIR_STRIP} ${TMPDIR_INSTRUMENTED}
 
-mkdir ${TMPDIR_STRIP}
 
-${UNZIP} -qd ${TMPDIR_STRIP} ${APK_FILENAME} AndroidManifest.xml classes*.dex
+#preserve contents under tmp name so we can overwrite the original file
+mv ${APK_FILENAME} ${TMP_FILENAME}
+
+#create stripped file as replacement for the original
+mkdir ${TMPDIR_STRIP}
+${UNZIP} -qd ${TMPDIR_STRIP} ${TMP_FILENAME} AndroidManifest.xml classes*.dex
 cd ${TMPDIR_STRIP}
-${ZIP} -q ../${STRIPPED_FILENAME} *
+${ZIP} -q ../${APK_FILENAME} *
 cd ..
 
-/bin/echo -n "Uploading ${STRIPPED_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file="@${STRIPPED_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+/bin/echo -n "Uploading ${APK_FILENAME} (stripped) to TestFairy.. "
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
@@ -169,12 +172,11 @@ echo "OK!"
 
 /bin/echo -n "Instrumenting/Patching APK file..."
 
-cp ${APK_FILENAME} ${TMP_FILENAME}
 
 mkdir ${TMPDIR_INSTRUMENTED}
 cd ${TMPDIR_INSTRUMENTED}
 ${UNZIP} -q ../${INSTRUMENTED_FILENAME}
-${ZIP} -0q ../${TMP_FILENAME} *
+${ZIP} -0rq ../${TMP_FILENAME} *
 if [ $? -ne 0 ]; then
 	echo "FAILED!"
 	echo
@@ -217,4 +219,5 @@ echo
 echo "Build was successfully uploaded to TestFairy and is available at:"
 echo ${URL}
 
-rm -rf ${TMPDIR_STRIP} ${TMPDIR_INSTRUMENTED} ${INSTRUMENTED_FILENAME} ${STRIPPED_FILENAME}
+rm -rf ${TMPDIR_STRIP} ${TMPDIR_INSTRUMENTED} ${INSTRUMENTED_FILENAME}
+
