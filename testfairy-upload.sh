@@ -3,12 +3,12 @@
 UPLOADER_VERSION=1.09
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=2ac2709f30963b30320dbb3c375416b5956f5e6d
+TESTFAIRY_API_KEY=
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=~/androidkeystore.jks
-STOREPASS=11111111
-ALIAS=tishmasandroidkey
+KEYSTORE=
+STOREPASS=
+ALIAS=
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
