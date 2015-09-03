@@ -145,7 +145,7 @@ ${ZIP} -q ../${APK_FILENAME} *
 cd ..
 
 /bin/echo -n "Uploading ${APK_FILENAME} (stripped) to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F apk_file="@${APK_FILENAME}" -F icon-watermark="${ICON_WATERMARK}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -A "TestFairy Command Line Uploader Advanced ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "${URL}" ]; then
@@ -158,13 +158,13 @@ fi
 URL="${URL}?api_key=${TESTFAIRY_API_KEY}"
 
 echo "OK!"
-/bin/echo -n "Downloading instrumented ZIP.. "
+/bin/echo -n "Downloading instrumented APK.. "
 ${CURL} -L -o ${INSTRUMENTED_FILENAME} -s ${URL}
 
 if [ ! -f "${INSTRUMENTED_FILENAME}" ]; then
 	echo "FAILED!"
 	echo
-	echo "Could not download ZIP back from server, please contact support@testfairy.com"
+	echo "Could not download APK back from server, please contact support@testfairy.com"
 	exit 1
 fi
 
