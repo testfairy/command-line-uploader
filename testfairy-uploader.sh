@@ -42,7 +42,7 @@ verify_tools() {
 	# Windows users: this script requires curl. If not installed please get from http://cygwin.com/
 
 	# Check 'curl' tool
-	${CURL} --help >/dev/null
+	"${CURL}" --help >/dev/null
 	if [ $? -ne 0 ]; then
 		echo "Could not run curl tool, please check settings"
 		exit 1
@@ -77,7 +77,7 @@ fi
 DATE=`date`
 
 /bin/echo -n "Uploading ${APP_FILENAME} to TestFairy.. "
-JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
