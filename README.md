@@ -11,6 +11,8 @@ There are 3 shell scripts in this repository:
 * `testfairy-upload-android-no-sdk.sh`
   Will upload APK files that do not include the TestFAiry SDK to TestFairy. The script Will sign the APK with your keystore and certificate. This is for adnaced users only.
 
+* `testfairy-upload-android-windows.bat`
+  Will upload APK Files from Windlows servers.
 
 When working with these shells scripts, notice that you will have to edit them and provide your **API KEY** and (optionally) other values such as testers groups to invite, metrics to record and other settings.
 
