@@ -5,14 +5,12 @@ TestFairy's Command Line Uploader is a shell script to upload your IPA or APK fi
 
 There are 3 shell scripts in this repository:
 
-* `testfairy-upload-ios.sh`
-  Will upload IPA files to TestFairy for distribution.
+* `testfairy-uploader.sh`
+  Will upload iOS IPA files or Android APK files to TestFairy for distribution.
 
-* `testfairy-upload-android.sh`
-  Will upload APK files to TestFairy. Will sign the APK with your keystore and certificate.
+* `testfairy-upload-android-no-sdk.sh`
+  Will upload APK files that do not include the TestFAiry SDK to TestFairy. The script Will sign the APK with your keystore and certificate. This is for adnaced users only.
 
-* `testfairy-upload-android-advanced.sh`
-  Same as above, but will use minimal bandwidth. Use for large files.
 
 When working with these shells scripts, notice that you will have to edit them and provide your **API KEY** and (optionally) other values such as testers groups to invite, metrics to record and other settings.
 
