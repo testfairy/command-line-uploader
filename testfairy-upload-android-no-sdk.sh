@@ -3,16 +3,16 @@
 UPLOADER_VERSION=1.10
 
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
-TESTFAIRY_API_KEY=
+TESTFAIRY_API_KEY=93e846c95e6620abe077db3aa05e79398d671b59
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=
+KEYSTORE=8db0c526a2af97aad4fbabf1cebe529ef614a397
 STOREPASS=
 ALIAS=
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
-TESTER_GROUPS=
+TESTER_GROUPS=Core
 
 # Should email testers about new version. Set to "off" to disable email notifications.
 NOTIFY="on"
