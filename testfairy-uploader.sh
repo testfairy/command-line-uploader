@@ -4,7 +4,7 @@
 # Android apps must include the TestFairy SDK. Read more here: http://docs.testfairy.com/Android/Integrating_Android_SDK.html
 # Android apps without SDK can be upladed with https://github.com/testfairy/command-line-uploader/blob/master/testfairy-upload-android-no-sdk.sh
 
-UPLOADER_VERSION=2.0
+UPLOADER_VERSION=2.1
 # Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
 TESTFAIRY_API_KEY=
 
