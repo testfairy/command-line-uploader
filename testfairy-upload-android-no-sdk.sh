@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 UPLOADER_VERSION=1.10
 
@@ -6,9 +6,9 @@ UPLOADER_VERSION=1.10
 TESTFAIRY_API_KEY=
 
 # Your Keystore, Storepass and Alias, the ones you use to sign your app.
-KEYSTORE=
-STOREPASS=
-ALIAS=
+KEYSTORE=android/keystores/debug.keystore
+STOREPASS=android
+ALIAS=androiddebugkey
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
 # This parameter is optional, leave empty if not required
@@ -21,13 +21,13 @@ NOTIFY="on"
 AUTO_UPDATE="off"
 
 # The maximum recording duration for every test. 
-MAX_DURATION="10m"
+MAX_DURATION="120m"
 
 # Is video recording enabled for this build 
 VIDEO="on"
 
 # Add a TestFairy watermark to the application icon?
-ICON_WATERMARK="on"
+ICON_WATERMARK="off"
 
 # Comment text will be included in the email sent to testers
 COMMENT=""
@@ -41,8 +41,50 @@ JARSIGNER=jarsigner
 
 SERVER_ENDPOINT=http://app.testfairy.com
 
+while [[ $# -gt 1 ]]
+do
+key="$1"
+
+case $key in
+    -a|--apikey)
+    TESTFAIRY_API_KEY="$2"
+    shift # past argument
+    ;;
+    -k|--keystore)
+    KEYSTORE="$2"
+    shift # past argument
+    ;;
+    -s|--storepass)
+    STOREPASS="$2"
+    shift # past argument
+    ;;
+    -l|--alias)
+    ALIAS="$2"
+    shift # past argument
+    ;;
+    -t|--testergroup)
+    TESTER_GROUP="$2"
+    shift # past argument
+    ;;
+    -f|--filename)
+    APK_FILENAME="$2"
+    shift # past argument
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+shift # past argument or value
+done
+
 usage() {
-	echo "Usage: testfairy-upload.sh APK_FILENAME"
+	echo -en "Usage: $0\n
+-a | --apikey\t\tTestfairy API Key
+-k | --keystore\t\tKeystore
+-s | --storepass\tStorepass
+-l | --alias\t\tStore Alias
+-t | --testergroup\tTestfairy Tester Group
+-f | --filename\t\tAPK Filename\n"
 	echo
 }
 	
@@ -106,16 +148,10 @@ verify_settings() {
 	fi
 }
 
-if [ $# -ne 1 ]; then
-	usage
-	exit 1
-fi
-
 # before even going on, make sure all tools work
 verify_tools
 verify_settings
 
-APK_FILENAME=$1
 if [ ! -f "${APK_FILENAME}" ]; then
 	usage
 	echo "Can't find file: ${APK_FILENAME}"
