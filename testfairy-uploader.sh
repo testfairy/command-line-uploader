@@ -1,11 +1,9 @@
 #!/bin/sh
 
-# Use this script for iOS or Android.
-# Android apps must include the TestFairy SDK. Read more here: http://docs.testfairy.com/Android/Integrating_Android_SDK.html
-# Android apps without SDK can be upladed with https://github.com/testfairy/command-line-uploader/blob/master/testfairy-upload-android-no-sdk.sh
+# This upload script is both for iOS and Android.
 
-UPLOADER_VERSION=2.1
-# Put your TestFairy API_KEY here. Find it in your TestFairy account settings.
+UPLOADER_VERSION=2.11
+# Put your TestFairy API_KEY here. Find it here: https://app.testfairy.com/settings/#tab-api-key
 TESTFAIRY_API_KEY=
 
 # Tester Groups that will be notified when the app is ready. Setup groups in your TestFairy account testers page.
