@@ -2,7 +2,7 @@
 
 # This upload script is both for iOS and Android.
 
-UPLOADER_VERSION=2.11
+UPLOADER_VERSION=2.12
 # Put your TestFairy API_KEY here. Find it here: https://app.testfairy.com/settings/#tab-api-key
 TESTFAIRY_API_KEY=
 
