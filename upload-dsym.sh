@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TESTFAIRY_ENDPOINT="http://app.testfairy.com/upload/dsym/"
+TESTFAIRY_ENDPOINT="https://upload.testfairy.com/upload/dsym/"
 
 ZIP=zip
 CURL=curl
