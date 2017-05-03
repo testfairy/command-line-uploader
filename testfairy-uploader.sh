@@ -16,10 +16,10 @@ NOTIFY="on"
 # If AUTO_UPDATE is "on" all users will be prompt to update to this build next time they run the app
 AUTO_UPDATE="off"
 
-# The maximum recording duration for every test. 
+# The maximum recording duration for every test.
 MAX_DURATION="10m"
 
-# Is video recording enabled for this build. valid values:  "on", "off", "wifi" 
+# Is video recording enabled for this build. valid values:  "on", "off", "wifi"
 VIDEO="wifi"
 
 # Comment text will be included in the email sent to testers
@@ -30,11 +30,39 @@ CURL=curl
 
 SERVER_ENDPOINT=https://upload.testfairy.com
 
+while [[ $# -gt 1 ]]
+do
+key="$1"
+
+case $key in
+    -a|--apikey)
+    TESTFAIRY_API_KEY="$2"
+    shift # past argument
+    ;;
+    -t|--testergroup)
+    TESTER_GROUPS="$2"
+    shift # past argument
+    ;;
+    -f|--filename)
+    APP_FILENAME="$2"
+    shift # past argument
+    ;;
+    -u|--autoupdate)
+    AUTO_UPDATE="$2"
+    shift # past argument
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+shift # past argument or value
+done
+
 usage() {
 	echo "Usage: testfairy-upload-ios.sh APP_FILENAME"
 	echo
 }
-	
+
 verify_tools() {
 
 	# Windows users: this script requires curl. If not installed please get from http://cygwin.com/
@@ -55,16 +83,10 @@ verify_settings() {
 	fi
 }
 
-if [ $# -ne 1 ]; then
-	usage
-	exit 1
-fi
-
 # before even going on, make sure all tools work
 verify_tools
 verify_settings
 
-APP_FILENAME=$1
 if [ ! -f "${APP_FILENAME}" ]; then
 	usage
 	echo "Can't find file: ${APP_FILENAME}"
