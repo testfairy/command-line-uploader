@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TESTFAIRY_ENDPOINT="https://upload.testfairy.com/upload/dsym/"
+TESTFAIRY_ENDPOINT="https://app.testfairy.com/upload/dsym/"
 
 ZIP=zip
 CURL=curl
@@ -13,7 +13,7 @@ log() {
 }
 
 help() {
-	echo "Usage: ${0} [-f] TESTFAIRY_API_KEY [-p DSYM_PATH]"
+	echo "Usage: ${0} [-f] TESTFAIRY_API_KEY [-p DSYM_PATH] [-u TESTFAIRY_ENDPOINT]"
 	exit 1
 }
 
@@ -29,23 +29,39 @@ fi
 
 API_KEY="${1}"
 if [ ! "${API_KEY}" ]; then
+	echo "Fatal: No Upload API key provided."
 	help
 fi
 
 DSYM_PATH=${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}
 
-if [ "${#}" -gt 1 ]; then
-	shift
-	if [ "${1}" != "-p" ]; then
-		help
-	fi
-
-	shift
-	DSYM_PATH="${1}"
-fi
+shift
+while [[ $# -gt 1 ]]
+do
+key="$1"
+case $key in
+    -u)
+    TESTFAIRY_ENDPOINT="${2}"
+    shift
+    ;;
+    -p)
+    DSYM_PATH="${2}"
+    shift
+    ;;
+    *)
+        help
+    ;;
+esac
+shift
+done
 
 if [ "${DSYM_PATH}" == "" ] || [ "${DSYM_PATH}" == "/" ] || [ ! -d "${DSYM_PATH}" ]; then
-	echo "Fatal: Can't find .dSYM folder!"
+	echo "Fatal: No .dSYM folder found at path [${DSYM_PATH}]."
+	help
+fi
+
+if [[ ${TESTFAIRY_ENDPOINT} == "" ]]; then
+	echo "Fatal: No upload endpoint given."
 	help
 fi
 
