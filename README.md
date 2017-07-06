@@ -8,9 +8,6 @@ There are 3 shell scripts in this repository:
 * `testfairy-uploader.sh`
   Will upload iOS IPA files or Android APK files to TestFairy for distribution.
 
-* `testfairy-upload-android-no-sdk.sh`
-  Will upload APK files that do not include the TestFAiry SDK to TestFairy. The script Will sign the APK with your keystore and certificate. This is for adnaced users only.
-
 * `testfairy-upload-android-windows.bat`
   Will upload APK Files from Windlows servers.
 
