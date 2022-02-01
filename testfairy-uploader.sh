@@ -2,20 +2,19 @@
 
 # This upload script is both for iOS and Android.
 
-UPLOADER_VERSION=2.13
+UPLOADER_VERSION=2.14
 # Put your TestFairy API_KEY here. Find it here: https://app.testfairy.com/settings/#tab-api-key
 # This is a mandatory parameter.
 TESTFAIRY_API_KEY=
 
-# Should email testers about new version. Set to "off" to disable email notifications.
-NOTIFY="on"
-
-# Tester Groups that will be notified in case NOTIFY equals "on".
-# When set to "all", all testers in the account will be notified.
-# In order to notify specific groups, create those groups in https://app.testfairy.com/testers/ 
+# Tester Groups that will be allows to download the app and will be notified in case NOTIFY equals "on".
+# create those groups in https://app.testfairy.com/testers/ 
 # In case of more than one group seperate by comma. Example "family,friends"
-# This param is mandatory in case NOTIFY is on.
-TESTERS_GROUPS=
+# This param is required in case NOTIFY is on.
+GROUPS=
+
+# Should email testers about new version. Set to "off" to disable email notifications.
+NOTIFY="off"
 
 # If AUTO_UPDATE is "on" users of older versions will be prompt to update to this build next time they run the app
 AUTO_UPDATE="off"
@@ -73,7 +72,7 @@ fi
 DATE=`date`
 
 /bin/echo -n "Uploading ${APP_FILENAME} to TestFairy.. "
-JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F comment="${COMMENT}" -F testers-groups="${TESTERS_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
+JSON=$( "${CURL}" -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${APP_FILENAME}" -F comment="${COMMENT}" -F groups="${GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy Command Line Uploader ${UPLOADER_VERSION}" )
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
